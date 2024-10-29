@@ -1,0 +1,6 @@
+@Villa_ResfulAPI_HostAddress = http://localhost:5107
+
+GET {{Villa_ResfulAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,22 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Villa_ResfulAPI.Models
+namespace Villa_ResfulAPI.Models.DTO
 {
-    public class Villa
+    public class VillaUpdateDto
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public int Id { get; set; }
+        [Required]
+        [MaxLength(50)]
         public string Name { get; set; }
         public string Details { get; set; }
+        [Required]
         public double Rate { get; set; }
         public int Sqft { get; set; }
+        [Required]
         public int Occupancy { get; set; }
+        [Required]
         public string ImageUrl { get; set; }
         public string Amenity { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
     }
 }

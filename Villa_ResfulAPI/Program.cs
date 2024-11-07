@@ -1,6 +1,7 @@
 
 
 using Microsoft.EntityFrameworkCore;
+using Villa_ResfulAPI;
 using Villa_ResfulAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 //    WriteTo.File("log/VillaLogs.txt", rollingInterval: RollingInterval.Day).CreateLogger();
 
 //builder.Host.UseSerilog();
-
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddControllers(option =>
 {
     //option.ReturnHttpNotAcceptable = true;

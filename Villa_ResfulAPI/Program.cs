@@ -1,5 +1,7 @@
-using Serilog;
-using Villa_ResfulAPI.Logging;
+
+
+using Microsoft.EntityFrameworkCore;
+using Villa_ResfulAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +16,14 @@ builder.Services.AddControllers(option =>
 {
     //option.ReturnHttpNotAcceptable = true;
 }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSqlConnection"));
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddSingleton<ILogging, LoggingV2>();
 
 var app = builder.Build();
 

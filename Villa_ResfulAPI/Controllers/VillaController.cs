@@ -7,18 +7,19 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Villa_ResfulAPI.Data;
 using Villa_ResfulAPI.Models;
 using Villa_ResfulAPI.Models.DTO;
+using Villa_ResfulAPI.Repository.IRepository;
 
 namespace Villa_ResfulAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VillaController(ILogger<VillaController> logger,ApplicationDbContext dbContext,IMapper mapper) : ControllerBase
+    public class VillaController(ILogger<VillaController> logger,IVillaRepository dbVilla,IMapper mapper) : ControllerBase
     {
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<VillaDto>>> GetVillas()
         {
-            var villaList = await dbContext.villas.ToListAsync();
+            var villaList = await dbVilla.GetAllAsync();
             return Ok(mapper.Map<List<VillaDto>>(villaList));
         }
         [HttpGet("{id:int}", Name ="GetVilla")]
@@ -33,7 +34,7 @@ namespace Villa_ResfulAPI.Controllers
                 logger.LogError("Get villa error with id " + id);
                 return BadRequest();
             }
-            var villa = await dbContext.villas.FirstOrDefaultAsync(u => u.Id == id);
+            var villa = await dbVilla.GetAsync(u => u.Id == id);
             if (villa == null)
             {
                 return NotFound();
@@ -45,7 +46,7 @@ namespace Villa_ResfulAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<VillaDto>> CreateVilla([FromBody]VillaCreateDto villaDto)
         {
-            if(await dbContext.villas.FirstOrDefaultAsync(u=> u.Name.ToLower() == villaDto.Name.ToLower()) != null)
+            if(await dbVilla.GetAsync(u=> u.Name.ToLower() == villaDto.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("customError", "Name Exists");
                 return BadRequest(ModelState);
@@ -55,8 +56,7 @@ namespace Villa_ResfulAPI.Controllers
                 return BadRequest(villaDto);
             }
             Villa newVilla = mapper.Map<Villa>(villaDto);
-            await dbContext.villas.AddAsync(newVilla);
-            await dbContext.SaveChangesAsync();
+            await dbVilla.CreateAsync(newVilla);
 
             return CreatedAtRoute("GetVilla", new { id = newVilla.Id },newVilla); //to return the location of the created villa we call GetVilla method and pass the id
         }
@@ -70,13 +70,12 @@ namespace Villa_ResfulAPI.Controllers
             {
                 return BadRequest();
             }
-            var villa = await dbContext.villas.FirstOrDefaultAsync(u => u.Id == id);
+            var villa = await dbVilla.GetAsync(u => u.Id == id);
             if(villa == null)
             {
                 return NotFound();
             }
-            dbContext.villas.Remove(villa);
-            await dbContext.SaveChangesAsync();
+            await dbVilla.RemoveAsync(villa);
             return NoContent();
         }
         [HttpPut("{id:int}")]
@@ -89,21 +88,20 @@ namespace Villa_ResfulAPI.Controllers
                 return BadRequest();
             }
             Villa villaupdate = mapper.Map<Villa>(villaDto);
-            dbContext.villas.Update(villaupdate);
-            await dbContext.SaveChangesAsync();
+            await dbVilla.UpdateAsync(villaupdate);
             return NoContent();
         }
         [HttpPatch]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdatePartialVilla(int id,JsonPatchDocument<VillaUpdateDto> PatchVilla)
+        public async Task<IActionResult> UpdatePartialVilla(int? id,JsonPatchDocument<VillaUpdateDto> PatchVilla)
         {
             if(id == null || id == 0)
             {
                 return BadRequest();
             }
-            var villa = await dbContext.villas.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            var villa = await dbVilla.GetAsync(u => u.Id == id,false);
             if (villa == null)
             {
                 return NotFound();
@@ -115,8 +113,7 @@ namespace Villa_ResfulAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            dbContext.villas.Update(villaPart);
-            await dbContext.SaveChangesAsync();
+            await dbVilla.UpdateAsync(villaPart);
             return NoContent();
         }
     }

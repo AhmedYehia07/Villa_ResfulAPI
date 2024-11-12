@@ -17,13 +17,8 @@ namespace Villa_ResfulAPI.Repository
         public async Task UpdateAsync(Villa entity)
         {
             entity.UpdatedDate = DateTime.Now;
-            dbContext.Update(entity);
+            dbContext.villas.Update(entity);
             await SaveAsync();
-        }
-
-        public Task UpdateAsync()
-        {
-            throw new NotImplementedException();
         }
     }
 }

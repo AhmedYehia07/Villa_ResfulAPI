@@ -7,6 +7,7 @@ namespace Villa_ResfulAPI.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options) { }
         public DbSet<Villa> villas { get; set; }
+        public DbSet<VillaNumber> VillaNumbers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Villa>().HasData(

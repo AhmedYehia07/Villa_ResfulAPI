@@ -5,8 +5,7 @@ namespace Villa_ResfulAPI.Models.DTO
 {
     public class VillaDto
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public int Id { get; set; }
         [Required]
         [MaxLength(50)]

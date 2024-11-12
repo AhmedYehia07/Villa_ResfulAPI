@@ -145,14 +145,15 @@ namespace Villa_ResfulAPI.Controllers
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<APIResponse>> UpdateVilla(int id,[FromBody]VillaUpdateDto villaDto)
+        public async Task<ActionResult<APIResponse>> UpdateVilla(int id,[FromBody]VillaUpdateDto UpdateDto)
         {
             try
             {
-                if (id == 0 || id != villaDto.Id)
+                if (id == 0 || id != UpdateDto.Id)
                 {
                     return BadRequest();
                 }
+                var villaDto = mapper.Map<VillaDto>(UpdateDto);
                 Villa villaupdate = mapper.Map<Villa>(villaDto);
                 await dbVilla.UpdateAsync(villaupdate);
 
@@ -203,7 +204,7 @@ namespace Villa_ResfulAPI.Controllers
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.ErrorMessages = new List<string>() { ex.ToString() };
-                return _response;
+                return BadRequest(_response);
             }
         }
     }

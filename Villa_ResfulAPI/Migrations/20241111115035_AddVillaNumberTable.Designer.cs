@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Villa_ResfulAPI.Data;
 
@@ -11,9 +12,11 @@ using Villa_ResfulAPI.Data;
 namespace Villa_ResfulAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241111115035_AddVillaNumberTable")]
+    partial class AddVillaNumberTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,25 +150,9 @@ namespace Villa_ResfulAPI.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("VillaID")
-                        .HasColumnType("int");
-
                     b.HasKey("VillaNo");
 
-                    b.HasIndex("VillaID");
-
                     b.ToTable("VillaNumbers");
-                });
-
-            modelBuilder.Entity("Villa_ResfulAPI.Models.VillaNumber", b =>
-                {
-                    b.HasOne("Villa_ResfulAPI.Models.Villa", "Villa")
-                        .WithMany()
-                        .HasForeignKey("VillaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Villa");
                 });
 #pragma warning restore 612, 618
         }

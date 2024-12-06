@@ -6,9 +6,11 @@ namespace Villa_ResfulAPI.Models.DTO
     public class VillaNumberDto
     {
         [Required]
+        [Range(100,1000)]
         public int VillaNo { get; set; }
         [Required]
         public int VillaID { get; set; }
-        public string? SpecialDetails { get; set; }
+        public string SpecialDetails { get; set; }
+        public VillaDto Villa { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace Villa_ResfulAPI.Controllers
         {
             try
             {
-                var VillaNumbers = await _dbvillaNumber.GetAllAsync();
+                var VillaNumbers = await _dbvillaNumber.GetAllAsync(includeProperties:"Villa");
                 _response.Result = _mapper.Map<List<VillaNumberDto>>(VillaNumbers);
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.IsSuccess = true;
@@ -57,14 +57,14 @@ namespace Villa_ResfulAPI.Controllers
         {
             try
             {
-                if(villaNo > 1000 || villaNo < 100)
+                if(villaNo >= 1000 || villaNo <= 100)
                 {
                     _response.IsSuccess=false;
                     _response.StatusCode=HttpStatusCode.BadRequest;
                     _response.ErrorMessages = new List<string>() { "VillaNumber range from 100 to 1000" };
                     return BadRequest(_response);
                 }
-                var VillaNumber = await _dbvillaNumber.GetAsync(u=>u.VillaNo==villaNo);
+                var VillaNumber = await _dbvillaNumber.GetAsync(u=>u.VillaNo==villaNo, includeProperties: "Villa");
                 if(VillaNumber == null)
                 {
                     _response.IsSuccess = false;
@@ -94,7 +94,7 @@ namespace Villa_ResfulAPI.Controllers
         {
             try
             {
-                if (createDto.VillaNo > 1000 || createDto.VillaNo <100)
+                if (createDto.VillaNo >= 1000 || createDto.VillaNo <= 100)
                 {
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
@@ -132,7 +132,7 @@ namespace Villa_ResfulAPI.Controllers
         {
             try
             {
-                if (VillaNo > 1000 || VillaNo < 100)
+                if (VillaNo >= 1000 || VillaNo <= 100)
                 {
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;

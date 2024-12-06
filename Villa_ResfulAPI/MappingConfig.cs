@@ -9,8 +9,8 @@ namespace Villa_ResfulAPI
         public MappingConfig()
         {
             CreateMap<Villa,VillaDto>().ReverseMap();
-            CreateMap<Villa,VillaCreateDto>().ReverseMap();
-            CreateMap<Villa,VillaUpdateDto>().ReverseMap();
+            CreateMap<VillaDto,VillaCreateDto>().ReverseMap();
+            CreateMap<VillaDto,VillaUpdateDto>().ReverseMap();
             CreateMap<VillaNumber, VillaNumberDto>().ReverseMap();
             CreateMap<VillaNumber, VillaNumberCreateDto>().ReverseMap();
             CreateMap<VillaNumber, VillaNumberUpdateDto>().ReverseMap();

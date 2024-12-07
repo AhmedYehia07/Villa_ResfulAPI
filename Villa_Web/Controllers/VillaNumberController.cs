@@ -45,10 +45,12 @@ namespace Villa_Web.Controllers
 				var response = await villaNumberService.CreateAsync<APIResponse>(createVm.VillaNumber);
 				if (response != null && response.IsSuccess == true)
 				{
-					return RedirectToAction("Index");
+                    TempData["success"] = "Villa Number created sucessfully";
+                    return RedirectToAction("Index");
 				}
 			}
-			return View(createVm);
+            TempData["error"] = "Failed to create Villa number";
+            return View(createVm);
 		}
 		public async Task<IActionResult> UpdateVillaNumber(int villaNo)
 		{
@@ -82,7 +84,8 @@ namespace Villa_Web.Controllers
 				var response = await villaNumberService.UpdateAsync<APIResponse>(UpdateDto.VillaNumber);
 				if (response != null && response.IsSuccess == true)
 				{
-					return RedirectToAction("Index");
+                    TempData["success"] = "Villa Number updated sucessfully";
+                    return RedirectToAction("Index");
 				}
 			}
 			return View(UpdateDto);
@@ -106,7 +109,7 @@ namespace Villa_Web.Controllers
 					});
 					return View(villaNumberVm);
 				}
-			}
+            }
 			return NotFound();
 		}
 		[HttpPost]
@@ -116,8 +119,10 @@ namespace Villa_Web.Controllers
 			var response = await villaNumberService.DeleteAsync<APIResponse>(VillaNumberDto.VillaNumber.VillaNo);
 			if (response != null && response.IsSuccess == true)
 			{
-				return RedirectToAction("Index");
+                TempData["success"] = "Villa Number deleted sucessfully";
+                return RedirectToAction("Index");
 			}
+			TempData["error"] = "Failed to delete Villa number";
 			return View(VillaNumberDto);
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ namespace Villa_ResfulAPI.Controllers
             this._response = new();
         }
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
@@ -48,6 +50,7 @@ namespace Villa_ResfulAPI.Controllers
             }
         }
         [HttpGet("{id:int}", Name ="GetVilla")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -113,6 +116,7 @@ namespace Villa_ResfulAPI.Controllers
             }
         }
         [HttpDelete("{id:int}")]
+        [Authorize(Roles ="Custom")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

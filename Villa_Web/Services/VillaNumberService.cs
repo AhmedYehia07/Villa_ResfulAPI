@@ -9,56 +9,61 @@ namespace Villa_Web.Services
     public class VillaNumberService : BaseService, IVillaNumberService
 	{
         private readonly IHttpClientFactory _httpClientFactory;
-        private string? VillaURL;
+        private string VillaURL;
         public VillaNumberService(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
         {
             _httpClientFactory = clientFactory;
             VillaURL = configuration.GetValue<string>("ServiceUrls:VillaApi");
         }
-        public Task<T> CreateAsync<T>(VillaNumberCreateDto entity)
+        public Task<T> CreateAsync<T>(VillaNumberCreateDto entity, string token)
         {
             return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.Post,
                 Data = entity,
-                URL = VillaURL + "/api/VillaNumber"
+                URL = VillaURL + "/api/VillaNumber",
+                Token = token
 			});
         }
 
-        public Task<T> DeleteAsync<T>(int id)
+        public Task<T> DeleteAsync<T>(int id, string token)
         {
             return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.Delete,
-                URL = VillaURL + "/api/VillaNumber/" + id
+                URL = VillaURL + "/api/VillaNumber/" + id,
+                Token = token
             });
         }
 
-        public Task<T> GetAllAsync<T>()
+        public Task<T> GetAllAsync<T>(string token)
         {
             return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.Get,
-                URL = VillaURL + "/api/VillaNumber"
-			});
+                URL = VillaURL + "/api/VillaNumber",
+                Token = token
+            });
         }
 
-        public Task<T> GetAsync<T>(int id)
+        public Task<T> GetAsync<T>(int id, string token)
         {
             return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.Get,
-                URL = VillaURL + "/api/VillaNumber/" + id
+                URL = VillaURL + "/api/VillaNumber/" + id,
+                Token = token
             });
         }
 
-        public Task<T> UpdateAsync<T>(VillaNumberUpdateDto entity)
+        public Task<T> UpdateAsync<T>(VillaNumberUpdateDto entity, string token)
         {
             return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.Put,
                 Data = entity,
-                URL = VillaURL + "/api/VillaNumber/" + entity.VillaNo
+                URL = VillaURL + "/api/VillaNumber/" + entity.VillaNo,
+                Token = token
             });
         }
     }

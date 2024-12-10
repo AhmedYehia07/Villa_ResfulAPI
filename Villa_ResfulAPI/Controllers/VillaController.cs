@@ -29,7 +29,6 @@ namespace Villa_ResfulAPI.Controllers
             this._response = new();
         }
         [HttpGet]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
@@ -82,6 +81,7 @@ namespace Villa_ResfulAPI.Controllers
                 return _response;
             }
         }
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -115,6 +115,7 @@ namespace Villa_ResfulAPI.Controllers
                 return _response;
             }
         }
+        [Authorize]
         [HttpDelete("{id:int}")]
         [Authorize(Roles ="Custom")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -146,6 +147,7 @@ namespace Villa_ResfulAPI.Controllers
                 return _response;
             }
         }
+        [Authorize]
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -173,6 +175,7 @@ namespace Villa_ResfulAPI.Controllers
                 return _response;
             }
         }
+        [Authorize]
         [HttpPatch]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

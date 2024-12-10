@@ -9,7 +9,7 @@ namespace Villa_Web.Services
     public class AuthService : BaseService, IAuthService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private string? VillaURL;
+        private string VillaURL;
         public AuthService(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
         {
             _httpClientFactory = clientFactory;
@@ -22,7 +22,7 @@ namespace Villa_Web.Services
             {
                 ApiType = SD.ApiType.Post,
                 Data = loginRequest,
-                URL = VillaURL + "api/Users/Login"
+                URL = VillaURL + "/api/Users/Login"
             });
         }
 
@@ -32,7 +32,7 @@ namespace Villa_Web.Services
             {
                 ApiType = SD.ApiType.Post,
                 Data = registerRequest,
-                URL = VillaURL + "api/Users/Register"
+                URL = VillaURL + "/api/Users/Register"
             });
         }
     }

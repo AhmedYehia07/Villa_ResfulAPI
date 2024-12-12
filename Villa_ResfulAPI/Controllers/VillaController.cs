@@ -33,11 +33,11 @@ namespace Villa_ResfulAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ResponseCache(CacheProfileName = "Duration30")]
-        public async Task<ActionResult<APIResponse>> GetVillas()
+        public async Task<ActionResult<APIResponse>> GetVillas(int pageNumber = 1, int pageSize = 3)
         {
             try
             {
-                var villaList = await dbVilla.GetAllAsync();
+                var villaList = await dbVilla.GetAllAsync(pageNumber:pageNumber,pageSize:pageSize);
                 _response.Result = mapper.Map<List<VillaDto>>(villaList);
                 _response.IsSuccess = true;
                 _response.StatusCode = HttpStatusCode.OK;

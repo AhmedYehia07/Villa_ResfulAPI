@@ -37,12 +37,12 @@ namespace Villa_Web.Services
             });
         }
 
-        public Task<T> GetAllAsync<T>(string token)
+        public Task<T> GetAllAsync<T>(string token, int pageSize = 3, int pageNumber = 0)
         {
             return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.Get,
-                URL = VillaURL + $"/api/{SD.Version}/Villa",
+                URL = VillaURL + $"/api/{SD.Version}/Villa?pageNumber={pageNumber}&pageSize={pageSize}",
                 Token = token
             });
         }

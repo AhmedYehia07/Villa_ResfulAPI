@@ -22,7 +22,7 @@ namespace Villa_Web.Services
             {
                 ApiType = SD.ApiType.Post,
                 Data = loginRequest,
-                URL = VillaURL + "/api/Users/Login"
+                URL = VillaURL + $"/api/{SD.Version}/Users/Login"
             });
         }
 
@@ -32,7 +32,7 @@ namespace Villa_Web.Services
             {
                 ApiType = SD.ApiType.Post,
                 Data = registerRequest,
-                URL = VillaURL + "/api/Users/Register"
+                URL = VillaURL + $"/api/{SD.Version}/Users/Register"
             });
         }
     }

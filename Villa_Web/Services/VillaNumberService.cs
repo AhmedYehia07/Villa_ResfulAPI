@@ -21,7 +21,7 @@ namespace Villa_Web.Services
             {
                 ApiType = SD.ApiType.Post,
                 Data = entity,
-                URL = VillaURL + "/api/VillaNumber",
+                URL = VillaURL + $"/api/{SD.Version}/VillaNumber",
                 Token = token
 			});
         }
@@ -31,7 +31,7 @@ namespace Villa_Web.Services
             return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.Delete,
-                URL = VillaURL + "/api/VillaNumber/" + id,
+                URL = VillaURL + $"/api/{SD.Version}/VillaNumber/" + id,
                 Token = token
             });
         }
@@ -41,7 +41,7 @@ namespace Villa_Web.Services
             return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.Get,
-                URL = VillaURL + "/api/VillaNumber",
+                URL = VillaURL + $"/api/{SD.Version}/VillaNumber",
                 Token = token
             });
         }
@@ -51,7 +51,7 @@ namespace Villa_Web.Services
             return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.Get,
-                URL = VillaURL + "/api/VillaNumber/" + id,
+                URL = VillaURL + $"/api/{SD.Version}/VillaNumber/" + id,
                 Token = token
             });
         }
@@ -62,7 +62,7 @@ namespace Villa_Web.Services
             {
                 ApiType = SD.ApiType.Put,
                 Data = entity,
-                URL = VillaURL + "/api/VillaNumber/" + entity.VillaNo,
+                URL = VillaURL + $"/api/{SD.Version}/VillaNumber/" + entity.VillaNo,
                 Token = token
             });
         }

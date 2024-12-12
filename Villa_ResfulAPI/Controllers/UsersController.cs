@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Villa_ResfulAPI.Data;
@@ -7,16 +8,17 @@ using Villa_ResfulAPI.Repository.IRepository;
 
 namespace Villa_ResfulAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:ApiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class UsersController(IUserRepository userRepository) : ControllerBase
     {
         protected APIResponse _response = new APIResponse();
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto login)
         {
-            var loginRequest = await userRepository.Login(login);
-            if(loginRequest.User == null || string.IsNullOrEmpty(loginRequest.Token))
+            var loginResponse = await userRepository.Login(login);
+            if(loginResponse.User == null || string.IsNullOrEmpty(loginResponse.Token))
             {
                 _response.ErrorMessages.Add("Incorrect Username or Password");
                 _response.IsSuccess = false;
@@ -24,7 +26,7 @@ namespace Villa_ResfulAPI.Controllers
                 _response.Result = null;
                 return BadRequest(_response);
             }
-            _response.Result = loginRequest;
+            _response.Result = loginResponse;
             _response.IsSuccess = true;
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,10 @@ using Villa_ResfulAPI.Repository.IRepository;
 
 namespace Villa_ResfulAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:ApiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class VillaNumberController : ControllerBase
     {
         protected APIResponse _response;
@@ -30,6 +33,7 @@ namespace Villa_ResfulAPI.Controllers
         }
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<APIResponse>> GetAllVillaNumbers()
         {
             try
@@ -48,6 +52,12 @@ namespace Villa_ResfulAPI.Controllers
                 _response.ErrorMessages = new List<string>() { ex.ToString() };
                 return _response;
             }
+        }
+        [HttpGet]
+        [MapToApiVersion("2")]
+        public string[] GetAllVilla()
+        {
+            return new string[] { "ahmed", "Yehia" };
         }
         [HttpGet("{villaNo:int}",Name ="GetVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]

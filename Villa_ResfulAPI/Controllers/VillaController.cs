@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
@@ -13,8 +14,9 @@ using Villa_ResfulAPI.Repository.IRepository;
 
 namespace Villa_ResfulAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:ApiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class VillaController : ControllerBase
     {
         protected APIResponse _response;

@@ -32,6 +32,7 @@ namespace Villa_ResfulAPI.Controllers
         }
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ResponseCache(CacheProfileName = "Duration30")]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
             try

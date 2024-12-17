@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Villa_ResfulAPI;
 using Villa_ResfulAPI.Data;
+using Villa_ResfulAPI.Models;
 using Villa_ResfulAPI.Repository;
 using Villa_ResfulAPI.Repository.IRepository;
 
@@ -18,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 //    WriteTo.File("log/VillaLogs.txt", rollingInterval: RollingInterval.Day).CreateLogger();
 
 //builder.Host.UseSerilog();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddAutoMapper(typeof(MappingConfig)); //AutoMapper Configuration
 builder.Services.AddControllers(option =>
 {

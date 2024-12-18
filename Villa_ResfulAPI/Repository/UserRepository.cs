@@ -12,7 +12,7 @@ using Villa_ResfulAPI.Repository.IRepository;
 
 namespace Villa_ResfulAPI.Repository
 {
-    public class UserRepository(ApplicationDbContext dbContext,IConfiguration configuration,UserManager<ApplicationUser> userManager,IMapper mapper) : IUserRepository
+    public class UserRepository(ApplicationDbContext dbContext,IConfiguration configuration,UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IMapper mapper) : IUserRepository
     {
         public bool IsUniqueUser(string username)
         {
@@ -74,18 +74,26 @@ namespace Villa_ResfulAPI.Repository
                 var result = await userManager.CreateAsync(user, registerRequestDto.Password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user,"admin");
+                    if(!roleManager.RoleExistsAsync("admin").GetAwaiter().GetResult())
+                    {
+                        await roleManager.CreateAsync(new IdentityRole("admin"));
+                    }
+                    if(!roleManager.RoleExistsAsync("customer").GetAwaiter().GetResult())
+                    {
+                        await roleManager.CreateAsync(new IdentityRole("customer"));
+                    }
+                    await userManager.AddToRoleAsync(user,registerRequestDto.Role);
                     var userToReturn = dbContext.applicationUsers.FirstOrDefault(u=>u.UserName == registerRequestDto.UserName);
                     return mapper.Map<UserDto>(userToReturn);
                 }
                 else
                 {
-                    return new UserDto();
+                    return null;
                 }
             }
             catch (Exception ex) { }
 
-            return new UserDto();
+            return null;
         }
     }
 }

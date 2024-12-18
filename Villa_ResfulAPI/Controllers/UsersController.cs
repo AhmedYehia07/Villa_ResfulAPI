@@ -43,8 +43,8 @@ namespace Villa_ResfulAPI.Controllers
                 _response.Result = null;
                 return BadRequest(_response);
             }
-            var localUser = await userRepository.Register(requestDto);
-            if(localUser == null)
+            var User = await userRepository.Register(requestDto);
+            if(User == null)
             {
                 _response.ErrorMessages.Add("Error while register");
                 _response.IsSuccess = false;

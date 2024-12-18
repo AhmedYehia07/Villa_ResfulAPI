@@ -35,7 +35,7 @@ namespace Villa_ResfulAPI.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto requestDto)
         {
             var unique = userRepository.IsUniqueUser(requestDto.UserName);
-            if(!unique)
+            if(unique == false)
             {
                 _response.ErrorMessages.Add("Username already exists");
                 _response.IsSuccess = false;

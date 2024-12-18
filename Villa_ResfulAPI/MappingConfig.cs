@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Formats.Tar;
 using Villa_ResfulAPI.Models;
 using Villa_ResfulAPI.Models.DTO;
 
@@ -14,6 +15,7 @@ namespace Villa_ResfulAPI
             CreateMap<VillaNumber, VillaNumberDto>().ReverseMap();
             CreateMap<VillaNumber, VillaNumberCreateDto>().ReverseMap();
             CreateMap<VillaNumber, VillaNumberUpdateDto>().ReverseMap();
+            CreateMap<ApplicationUser, UserDto>().ReverseMap();
         }
     }
 }

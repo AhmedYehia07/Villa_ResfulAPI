@@ -7,6 +7,6 @@ namespace Villa_ResfulAPI.Repository.IRepository
     {
         public bool IsUniqueUser(string username);
         public Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
-        public Task<LocalUser> Register(RegisterRequestDto registerRequestDto);
+        public Task<UserDto> Register(RegisterRequestDto registerRequestDto);
     }
 }

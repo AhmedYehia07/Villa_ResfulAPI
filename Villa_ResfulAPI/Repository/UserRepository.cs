@@ -1,5 +1,8 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using Villa_ResfulAPI.Data;
@@ -9,11 +12,11 @@ using Villa_ResfulAPI.Repository.IRepository;
 
 namespace Villa_ResfulAPI.Repository
 {
-    public class UserRepository(ApplicationDbContext dbContext,IConfiguration configuration) : IUserRepository
+    public class UserRepository(ApplicationDbContext dbContext,IConfiguration configuration,UserManager<ApplicationUser> userManager,IMapper mapper) : IUserRepository
     {
         public bool IsUniqueUser(string username)
         {
-            var user = dbContext.Users.FirstOrDefault(u=>u.UserName == username);
+            var user = dbContext.applicationUsers.FirstOrDefault(u=>u.UserName == username);
             if(user == null)
             {
                 return true;
@@ -23,9 +26,9 @@ namespace Villa_ResfulAPI.Repository
 
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
-            var user = dbContext.Users.FirstOrDefault(u=>u.UserName.ToLower() == loginRequestDto.UserName.ToLower()
-            && u.Password == loginRequestDto.Password);
-            if(user == null)
+            var user = dbContext.applicationUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDto.UserName.ToLower());
+            bool IsValid = await userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+            if(user == null || IsValid == false)
             {
                 return new LoginResponseDto()
                 {
@@ -33,6 +36,7 @@ namespace Villa_ResfulAPI.Repository
                     User = null
                 };
             }
+            var role = await userManager.GetRolesAsync(user);
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(configuration.GetValue<string>("ApiSettings:SecretKey"));
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -40,7 +44,7 @@ namespace Villa_ResfulAPI.Repository
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name,user.UserName.ToString()),
-                    new Claim(ClaimTypes.Role,user.Role)
+                    new Claim(ClaimTypes.Role,role.FirstOrDefault())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -51,23 +55,37 @@ namespace Villa_ResfulAPI.Repository
             return new LoginResponseDto()
             {
                 Token = tokenHandler.WriteToken(token),
-                User = user
+                User = mapper.Map<UserDto>(user),
+                Role = role.FirstOrDefault()
             };
         }
 
-        public async Task<LocalUser> Register(RegisterRequestDto registerRequestDto)
+        public async Task<UserDto> Register(RegisterRequestDto registerRequestDto)
         {
-            var user = new LocalUser()
+            var user = new ApplicationUser()
             {
                 UserName = registerRequestDto.UserName,
-                Password = registerRequestDto.Password,
+                Email = registerRequestDto.UserName,
+                NormalizedEmail = registerRequestDto.UserName.ToUpper(),
                 Name = registerRequestDto.Name,
-                Role = registerRequestDto.Role
             };
-            await dbContext.Users.AddAsync(user);
-            await dbContext.SaveChangesAsync();
-            user.Password = "";
-            return user;
+            try
+            {
+                var result = await userManager.CreateAsync(user, registerRequestDto.Password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user,"admin");
+                    var userToReturn = dbContext.applicationUsers.FirstOrDefault(u=>u.UserName == registerRequestDto.UserName);
+                    return mapper.Map<UserDto>(userToReturn);
+                }
+                else
+                {
+                    return new UserDto();
+                }
+            }
+            catch (Exception ex) { }
+
+            return new UserDto();
         }
     }
 }

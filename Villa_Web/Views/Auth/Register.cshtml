@@ -17,8 +17,13 @@
 				<span asp-validation-for="Name" class="text-danger"></span>
 			</div>
 			<div class="col-lg-6 offset-lg-3 pb-2">
-				<input asp-for="Password" type="text" class="form-control" placeholder="Password" />
+				<input asp-for="Password" type="password" class="form-control" placeholder="Password" />
 				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+			<div class="col-lg-6 offset-lg-3 pb-2">
+				<select asp-for="Role" asp-items="@ViewBag.RoleList" class="form-select">
+					<option selected disabled>--Select Role</option>
+				</select>
 			</div>
 			<div class="col-lg-6 offset-lg-3 pb-2">
 				<button type="submit" class="form-control btn btn-primary" value="Submit">Register</button>

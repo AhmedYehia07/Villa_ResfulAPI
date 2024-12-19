@@ -74,13 +74,9 @@ namespace Villa_ResfulAPI.Repository
                 var result = await userManager.CreateAsync(user, registerRequestDto.Password);
                 if (result.Succeeded)
                 {
-                    if(!roleManager.RoleExistsAsync("admin").GetAwaiter().GetResult())
+                    if(!roleManager.RoleExistsAsync(registerRequestDto.Role).GetAwaiter().GetResult())
                     {
-                        await roleManager.CreateAsync(new IdentityRole("admin"));
-                    }
-                    if(!roleManager.RoleExistsAsync("customer").GetAwaiter().GetResult())
-                    {
-                        await roleManager.CreateAsync(new IdentityRole("customer"));
+                        await roleManager.CreateAsync(new IdentityRole(registerRequestDto.Role));
                     }
                     await userManager.AddToRoleAsync(user,registerRequestDto.Role);
                     var userToReturn = dbContext.applicationUsers.FirstOrDefault(u=>u.UserName == registerRequestDto.UserName);

@@ -24,7 +24,8 @@ namespace Villa_ResfulAPI.Data
                     Occupancy = 4,
                     Rate = 200,
                     Sqft = 550,
-                    Amenity = ""
+                    Amenity = "",
+                    CreatedDate = new DateTime(2024,10,1)
                 },
               new Villa
               {
@@ -35,7 +36,8 @@ namespace Villa_ResfulAPI.Data
                   Occupancy = 4,
                   Rate = 300,
                   Sqft = 550,
-                  Amenity = ""
+                  Amenity = "",
+                  CreatedDate = new DateTime(2024, 10, 1)
               },
               new Villa
               {
@@ -46,7 +48,8 @@ namespace Villa_ResfulAPI.Data
                   Occupancy = 4,
                   Rate = 400,
                   Sqft = 750,
-                  Amenity = ""
+                  Amenity = "",
+                  CreatedDate = new DateTime(2024, 10, 1)
               },
               new Villa
               {
@@ -57,7 +60,8 @@ namespace Villa_ResfulAPI.Data
                   Occupancy = 4,
                   Rate = 550,
                   Sqft = 900,
-                  Amenity = ""
+                  Amenity = "",
+                  CreatedDate = new DateTime(2024, 10, 1)
               },
               new Villa
               {
@@ -68,7 +72,8 @@ namespace Villa_ResfulAPI.Data
                   Occupancy = 4,
                   Rate = 600,
                   Sqft = 1100,
-                  Amenity = ""
+                  Amenity = "",
+                  CreatedDate = new DateTime(2024, 10, 1)
               });
         }
     }

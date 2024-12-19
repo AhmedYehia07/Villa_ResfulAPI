@@ -6,11 +6,10 @@ using Villa_ResfulAPI.Data;
 using Villa_ResfulAPI.Models.DTO;
 using Villa_ResfulAPI.Repository.IRepository;
 
-namespace Villa_ResfulAPI.Controllers
+namespace Villa_ResfulAPI.Controllers.V1
 {
     [Route("api/v{version:ApiVersion}/[controller]")]
     [ApiController]
-    [ApiVersion("1.0")]
     public class UsersController(IUserRepository userRepository) : ControllerBase
     {
         protected APIResponse _response = new APIResponse();

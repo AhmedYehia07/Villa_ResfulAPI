@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -46,17 +47,30 @@ namespace Villa_Web.Controllers
         }
         public IActionResult Register()
         {
-            var registerRequest = new RegisterRequestDto();
-            return View(registerRequest);
+            var rolesList = new List<SelectListItem> {
+                new SelectListItem { Text = SD.Admin, Value = SD.Admin },
+                new SelectListItem { Text = SD.Customer, Value = SD.Customer }
+            };
+            ViewBag.RoleList = rolesList;
+            return View();
         }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterRequestDto registerRequest)
         {
+            if (string.IsNullOrEmpty(registerRequest.Role))
+            {
+                registerRequest.Role = SD.Customer;
+            }
             var response = await AuthService.RegisterAsync<APIResponse>(registerRequest);
             if (response != null && response.IsSuccess == true)
             {
                 return RedirectToAction("Login");
             }
+            var rolesList = new List<SelectListItem> {
+                new SelectListItem { Text = SD.Admin, Value = SD.Admin },
+                new SelectListItem { Text = SD.Customer, Value = SD.Customer }
+            };
+            ViewBag.RoleList = rolesList;
             return View(registerRequest);
         }
         public async Task<IActionResult> Logout()

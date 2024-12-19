@@ -12,11 +12,11 @@ using Villa_ResfulAPI.Models;
 using Villa_ResfulAPI.Models.DTO;
 using Villa_ResfulAPI.Repository.IRepository;
 
-namespace Villa_ResfulAPI.Controllers
+namespace Villa_ResfulAPI.Controllers.V2
 {
     [Route("api/v{version:ApiVersion}/[controller]")]
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class VillaController : ControllerBase
     {
         protected APIResponse _response;
